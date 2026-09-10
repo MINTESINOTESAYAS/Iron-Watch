@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IRONWATCH — A0 = 0 Trigger Diagnostic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0d0f;
+      --bg-2: #14161a;
+      --panel: #1a1d22;
+      --line: #2c3138;
+      --steel: #9aa3ad;
+      --muted: #7a828c;
+      --text: #e8ecef;
+      --green: #3dffa1;
+      --green-dim: #1a5c40;
+      --red: #ff3b3b;
+      --red-hot: #ff6b4a;
+      --amber: #ffb020;
+      --caution: #e2c14a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--text); font-family: "IBM Plex Sans", system-ui, sans-serif; min-height: 100%; }
+    body.alarm-on { background: #140808; }
+    body.alarm-on::before {
+      content: "";
+      pointer-events: none;
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255, 40, 40, 0.18), transparent 55%);
+      animation: strobe 0.7s steps(2, end) infinite;
+      z-index: 0;
+    }
+    @keyframes strobe {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.35; }
+    }
+    .wrap { position: relative; z-index: 1; max-width: 1360px; margin: 0 auto; padding: 22px 22px 80px; }
+    header {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 16px;
+      border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 22px;
+    }
+    .brand { display: flex; flex-direction: column; gap: 4px; }
+    .eyebrow {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.28em;
+      color: var(--caution); text-transform: uppercase;
+    }
+    h1 {
+      font-family: "Oswald", sans-serif; font-size: clamp(28px, 5vw, 48px); font-weight: 700;
+      letter-spacing: 0.06em; line-height: 0.95; text-transform: uppercase;
+    }
+    h1 span { color: var(--red); }
+    .header-meta { text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+    .header-meta strong { display: block; color: var(--text); font-weight: 500; margin-bottom: 4px; }
+    .banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      background: #2a0f0f; border: 1px solid #6a1c1c; padding: 12px 16px; margin-bottom: 22px;
+      font-family: "IBM Plex Mono", monospace; font-size: 13px;
+    }
+    .banner.ok { background: #0f2418; border-color: #1d5c3a; }
+    .banner b { color: var(--red); letter-spacing: 0.08em; }
+    .banner.ok b { color: var(--green); }
+    .grid {
+      display: grid; grid-template-columns: 1.15fr 0.95fr 0.95fr; gap: 16px;
+    }
+    @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel); border: 1px solid var(--line); padding: 14px;
+    }
+    .card h2 {
+      font-family: "Oswald", sans-serif; font-size: 14px; letter-spacing: 0.18em;
+      color: var(--steel); text-transform: uppercase; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .card h2 em { font-style: normal; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+    .gate-frame { position: relative; overflow: hidden; background: #08090b; border: 1px solid #2a2e34; aspect-ratio: 16/10; }
+    .gate-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gate-frame .tag {
+      position: absolute; left: 10px; bottom: 10px; background: rgba(8,9,11,0.78);
+      border: 1px solid var(--line); padding: 6px 10px; font-family: "IBM Plex Mono", monospace; font-size: 11px;
+    }
+    .leds { display: flex; gap: 10px; margin-top: 12px; }
+    .led {
+      flex: 1; display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+      border: 1px solid var(--line); background: #111318; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.08em;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: #2a2e34; box-shadow: inset 0 0 4px #000; }
+    .dot.red.on { background: var(--red); box-shadow: 0 0 14px var(--red); }
+    .dot.grn.on { background: var(--green); box-shadow: 0 0 14px var(--green); }
+    .dot.buzz.on { background: var(--amber); box-shadow: 0 0 14px var(--amber); animation: buzz 0.12s linear infinite; }
+    @keyframes buzz { 50% { opacity: 0.45; } }
+
+    .meter-wrap { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gauge {
+      position: relative; height: 210px; background: #0e1013; border: 1px solid #2a2e34;
+      display: flex; align-items: flex-end; justify-content: center; overflow: hidden;
+    }
+    .gauge svg { width: 100%; height: 200px; }
+    .readouts {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .readout { background: #0e1013; border: 1px solid #2a2e34; padding: 10px; }
+    .readout .k { font-size: 10px; letter-spacing: 0.16em; color: var(--muted); }
+    .readout .v { font-size: 28px; font-family: "Oswald", sans-serif; letter-spacing: 0.04em; line-height: 1.1; margin-top: 2px; }
+    .readout .v.hot { color: var(--red); }
+    .pot { margin-top: 4px; }
+    .pot label {
+      display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace;
+      font-size: 11px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px; text-transform: uppercase;
+    }
+    input[type="range"] {
+      width: 100%; accent-color: var(--red); height: 6px; cursor: pointer;
+    }
+    .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    button {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      background: #0e1013; color: var(--text); border: 1px solid var(--steel); padding: 9px 12px; cursor: pointer;
+    }
+    button:hover { background: #262b32; }
+    button.danger { border-color: var(--red); color: var(--red); }
+    button.good { border-color: var(--green); color: var(--green); }
+
+    .term {
+      background: #070809; border: 1px solid #2a2e34; height: 220px; overflow: auto;
+      padding: 10px; font-family: "IBM Plex Mono", monospace; font-size: 12px; line-height: 1.45; color: #b7ffcf;
+    }
+    .term .err { color: #ff8a8a; }
+    .term .ok { color: var(--green); }
+    .term-in { display: flex; gap: 8px; margin-top: 8px; }
+    .term-in input {
+      flex: 1; background: #0e1013; border: 1px solid #2a2e34; color: var(--text);
+      font-family: "IBM Plex Mono", monospace; font-size: 13px; padding: 9px 10px; outline: none;
+    }
+    .term-in input:focus { border-color: var(--caution); }
+    .hint { margin-top: 8px; font-size: 12px; color: var(--muted); }
+
+    .why {
+      margin-top: 22px; border: 1px solid var(--line); background: var(--bg-2); padding: 18px 18px 8px;
+    }
+    .why h2 {
+      font-family: "Oswald", sans-serif; letter-spacing: 0.14em; text-transform: uppercase; font-size: 18px; margin-bottom: 10px;
+    }
+    .why p, .why li { color: #c5ccd3; font-size: 14.5px; line-height: 1.6; }
+    .why p { margin-bottom: 10px; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 12px 0 16px; }
+    @media (max-width: 800px) { .cols { grid-template-columns: 1fr; } }
+    .why code, .term code {
+      font-family: "IBM Plex Mono", monospace; font-size: 12px; background: #0e1013; padding: 1px 5px; border: 1px solid #2a2e34;
+    }
+    .why pre {
+      background: #0e1013; border: 1px solid #2a2e34; padding: 12px; overflow: auto;
+      font-family: "IBM Plex Mono", monospace; font-size: 12px; line-height: 1.5; color: #d7dee6; margin: 8px 0 14px;
+    }
+    .fault {
+      border-left: 3px solid var(--red); padding: 8px 12px; background: #1a1010; margin: 10px 0 14px;
+      font-family: "IBM Plex Mono", monospace; font-size: 13px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0 16px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.12em; font-weight: 500; }
+    .schematic {
+      display: grid; grid-template-columns: 1fr; gap: 8px; font-family: "IBM Plex Mono", monospace; font-size: 12px;
+    }
+    .wire {
+      display: flex; align-items: center; gap: 10px; background: #0e1013; border: 1px solid #2a2e34; padding: 10px 12px;
+    }
+    .pin { color: var(--caution); min-width: 148px; }
+    footer { margin-top: 28px; color: var(--muted); font-size: 12px; font-family: "IBM Plex Mono", monospace; }
+  </style>
+</head>
+<body class="alarm-on">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="eyebrow">Ferrous discrimination · factory theft gate</div>
+        <h1>IronWatch <span>A0=0</span> Trigger</h1>
+      </div>
+      <div class="header-meta">
+        <strong id="clock">--:--:--</strong>
+        Proteus / Arduino diagnostic console<br />
+        analogRead(A0) · CD4046 DEMOD
+      </div>
+    </header>
+
+    <div class="banner" id="banner">
+      <div><b>A0 = 0 → TRIGGER</b> &nbsp; Demod voltage collapsed. Old firmware required A0 &gt; 600, so zero could never alarm.</div>
+      <div id="banner-state">ALARM ACTIVE · UNAUTHORIZED</div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Gate <em id="gate-state">ALARM</em></h2>
+        <div class="gate-frame">
+          <img id="gate-img" src="assets/gate-alarm.png" alt="IronWatch walk-through gate in alarm" />
+          <div class="tag" id="gate-tag">ENTRY DENIED · FERROUS SIGNATURE</div>
+        </div>
+        <div class="leds">
+          <div class="led"><span class="dot red on" id="led-red"></span> D2 RED</div>
+          <div class="led"><span class="dot grn" id="led-grn"></span> D3 GREEN</div>
+          <div class="led"><span class="dot buzz on" id="led-buzz"></span> D4 BUZZER</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>A0 · DEMOD <em>ADC 0–1023</em></h2>
+        <div class="meter-wrap">
+          <div class="gauge" title="Analog voltage on Arduino A0">
+            <svg viewBox="0 0 320 200" aria-hidden="true">
+              <path d="M40 170 A120 120 0 0 1 280 170" fill="none" stroke="#2a2e34" stroke-width="14" />
+              <path d="M40 170 A120 120 0 0 1 100 62" fill="none" stroke="#ff3b3b" stroke-width="14" />
+              <text x="28" y="186" fill="#ff3b3b" font-size="11" font-family="IBM Plex Mono">0V TRIGGER</text>
+              <text x="150" y="38" fill="#7a828c" font-size="11" font-family="IBM Plex Mono">2.5V</text>
+              <text x="248" y="186" fill="#7a828c" font-size="11" font-family="IBM Plex Mono">5V idle</text>
+              <line id="needle" x1="160" y1="170" x2="52" y2="150" stroke="#ffb020" stroke-width="3" />
+              <circle cx="160" cy="170" r="6" fill="#e8ecef" />
+            </svg>
+          </div>
+          <div class="readouts">
+            <div class="readout">
+              <div class="k">ANALOGREAD(A0)</div>
+              <div class="v hot" id="adc-val">000</div>
+            </div>
+            <div class="readout">
+              <div class="k">VOLTS DC</div>
+              <div class="v hot" id="volt-val">0.00</div>
+            </div>
+          </div>
+          <div class="pot">
+            <label>
+              <span>RV1 wiper → VCOIN → DEMOD → A0</span>
+              <span id="pot-label">0 %</span>
+            </label>
+            <input id="pot" type="range" min="0" max="1023" value="0" />
+          </div>
+          <div class="actions">
+            <button class="danger" id="btn-zero">Force A0 = 0</button>
+            <button class="good" id="btn-idle">Raise to idle (~2.8 V)</button>
+            <button id="btn-mute">Mute buzzer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Virtual Terminal <em>9600 8N1</em></h2>
+        <div class="term" id="term"></div>
+        <form class="term-in" id="term-form">
+          <input id="term-input" autocomplete="off" placeholder="Type A1B2C3 then Enter" />
+          <button type="submit">Send</button>
+        </form>
+        <p class="hint">Authorized ID is <code>A1B2C3</code>. While AUTH is live, A0=0 will not alarm (checked-out tool). Also: HELP, MODE LOW, MODE HIGH, TH 40.</p>
+      </section>
+    </div>
+
+    <section class="why">
+      <h2>Diagnosis — why A0 sat at 0 and refused to trigger</h2>
+      <div class="fault">
+        Two faults, stacked. (1) 4046 DEMOD follows VCOIN, and VCOIN was left floating → A0 is 0 V. (2) Firmware asked for A0 &gt; 600 → zero can never fire the alarm.
+      </div>
+      <div class="cols">
+        <div>
+          <p>On a CD4046, <strong>pin 10 (DEMOD)</strong> is not an independent detector output. It is a source-follower of <strong>pin 9 (VCOIN)</strong>. Your ERC report listed <code>UNDRIVEN: U1,VCOIN</code> and that was treated as harmless. It is not harmless if A0 is reading DEMOD.</p>
+          <p>The coil, LM358 and RV1 can all be alive on the sheet. None of that voltage reaches Arduino A0 unless it is fed into VCOIN (or you jumper the pot wiper straight to A0).</p>
+        </div>
+        <div class="schematic">
+          <div class="wire"><span class="pin">WAS</span> VCOIN pin 9 floating → DEMOD 0 V → analogRead = 0 → (0 &gt; 600) = false → silent</div>
+          <div class="wire"><span class="pin">NOW FIRMWARE</span> analogRead ≤ 40 → METAL → if no badge → D2 + D4</div>
+          <div class="wire"><span class="pin">NOW WIRING</span> RV1 wiper → VCOIN pin 9, DEMOD pin 10 stays on A0</div>
+        </div>
+      </div>
+      <pre>// old, cannot fire when A0 is 0
+bool metalDetected = (sensorValue > 600);
+
+// IronWatch, what you asked for
+bool metalDetected = (sensorValue <= 40);   // A0 = 0 TRIGGERS</pre>
+      <h2>Do this in Proteus, click by click</h2>
+      <table>
+        <thead><tr><th>Step</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Stop the simulation. Double-click the Uno → Program File → load <code>firmware/metal_gate_detector.ino.hex</code> (export from Arduino IDE first).</td></tr>
+          <tr><td>2</td><td>Wire <strong>RV1 wiper</strong> to <strong>4046 pin 9 (VCOIN)</strong>. Leave DEMOD → A0 as it is.</td></tr>
+          <tr><td>3</td><td>Optional but fast: if DEMOD still stays 0 V, delete that wire and jumper RV1 wiper directly to A0.</td></tr>
+          <tr><td>4</td><td>Play. Double-click Virtual Terminal. If A0 is 0 you must see <code>[A0=0 TRIGGER]</code> and the red LED.</td></tr>
+          <tr><td>5</td><td>Sweep RV1. Numbers on the <code>A0=</code> line must move. Ground end = trigger. Raised = clear.</td></tr>
+          <tr><td>6</td><td>Type <code>A1B2C3</code> while A0 is 0 — alarm suppresses for 5 seconds (authorized checkout).</td></tr>
+        </tbody>
+      </table>
+      <p>Full write-up: <code>docs/A0-TRIGGER-DIAGNOSIS.md</code>. Firmware: <code>firmware/metal_gate_detector.ino</code>.</p>
+    </section>
+    <footer>IRONWATCH · A0 low-side ferrous trigger · Proteus companion diagnostic</footer>
+  </div>
+
+  <script>
+    const THRESHOLD = 40;
+    const HYST = 20;
+    const AUTH_MS = 5000;
+
+    const $ = (id) => document.getElementById(id);
+    const pot = $("pot");
+    const term = $("term");
+    const needle = $("needle");
+
+    let detectOnLow = true;
+    let metalLatched = true; // A0 starts at 0
+    let authorized = false;
+    let lastAuth = 0;
+    let muted = true;
+    let audioCtx = null;
+    let buzzOsc = null;
+    let lastAlarm = true;
+    let lastLine = 0;
+
+    function log(msg, cls) {
+      const line = document.createElement("div");
+      if (cls) line.className = cls;
+      line.textContent = msg;
+      term.appendChild(line);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function adc() { return Number(pot.value); }
+    function volts(a) { return a * (5 / 1023); }
+
+    function evalMetal(a) {
+      if (detectOnLow) {
+        if (!metalLatched && a <= THRESHOLD) metalLatched = true;
+        if ( metalLatched && a > THRESHOLD + HYST) metalLatched = false;
+      } else {
+        if (!metalLatched && a >= 600) metalLatched = true;
+        if ( metalLatched && a < 600 - HYST) metalLatched = false;
+      }
+      return metalLatched;
+    }
+
+    function setNeedle(a) {
+      const ang = -150 + (a / 1023) * 120; // 0V left-red, 5V right
+      const rad = (ang * Math.PI) / 180;
+      const x = 160 + Math.cos(rad) * 118;
+      const y = 170 + Math.sin(rad) * 118;
+      needle.setAttribute("x2", x.toFixed(1));
+      needle.setAttribute("y2", y.toFixed(1));
+    }
+
+    function setBuzz(on) {
+      if (muted || !on) {
+        if (buzzOsc) { try { buzzOsc.stop(); } catch (e) {} buzzOsc = null; }
+        return;
+      }
+      if (!audioCtx) return;
+      if (buzzOsc) return;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = "square";
+      osc.frequency.value = 880;
+      g.gain.value = 0.03;
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.start();
+      buzzOsc = osc;
+    }
+
+    function render(forceLog) {
+      if (authorized && Date.now() - lastAuth > AUTH_MS) {
+        authorized = false;
+        log(">> Authorization expired.");
+      }
+      const a = adc();
+      const v = volts(a);
+      const metal = evalMetal(a);
+      const alarm = metal && !authorized;
+
+      $("adc-val").textContent = String(a).padStart(3, "0");
+      $("volt-val").textContent = v.toFixed(2);
+      $("pot-label").textContent = Math.round((a / 1023) * 100) + " %";
+      $("adc-val").classList.toggle("hot", alarm);
+      $("volt-val").classList.toggle("hot", alarm);
+      setNeedle(a);
+
+      document.body.classList.toggle("alarm-on", alarm);
+      $("led-red").classList.toggle("on", alarm);
+      $("led-grn").classList.toggle("on", !alarm);
+      $("led-buzz").classList.toggle("on", alarm);
+      $("gate-img").src = alarm ? "assets/gate-alarm.png" : "assets/gate-clear.png";
+      $("gate-state").textContent = alarm ? "ALARM" : "CLEAR";
+      $("gate-tag").textContent = alarm
+        ? "ENTRY DENIED · FERROUS SIGNATURE"
+        : "READY · NO FERROUS ALARM";
+      $("banner").classList.toggle("ok", !alarm);
+      $("banner").querySelector("b").textContent = alarm ? "A0 LOW → TRIGGER" : "A0 RAISED → CLEAR";
+      $("banner-state").textContent = alarm
+        ? "ALARM ACTIVE · UNAUTHORIZED"
+        : (authorized ? "AUTHORIZED WINDOW" : "GATE CLEAR");
+
+      setBuzz(alarm);
+
+      const now = Date.now();
+      if (forceLog || alarm !== lastAlarm || now - lastLine > 280) {
+        lastLine = now;
+        const line =
+          "A0=" + a +
+          "  V=" + v.toFixed(2) +
+          "  METAL=" + (metal ? "YES" : "no ") +
+          "  AUTH=" + (authorized ? "YES" : "no ") +
+          "  ALARM=" + (alarm ? "ON ***" : "off") +
+          (a === 0 && detectOnLow ? "  [A0=0 TRIGGER]" : "");
+        log(line, alarm ? "err" : "");
+        if (alarm !== lastAlarm) {
+          log(alarm ? "*** ALARM: unauthorized ferrous signature ***" : "Clear.", alarm ? "err" : "ok");
+        }
+        lastAlarm = alarm;
+      }
+    }
+
+    function runCommand(raw) {
+      const cmd = raw.trim().toUpperCase();
+      if (!cmd) return;
+      log("> " + cmd);
+      if (cmd === "HELP" || cmd === "?") {
+        log("A1B2C3  authorize 5s");
+        log("MODE LOW | MODE HIGH");
+        log("TH 40    (firmware only; this console uses 40 / 600)");
+        return;
+      }
+      if (cmd === "MODE LOW") {
+        detectOnLow = true; metalLatched = false;
+        log(">> MODE=LOW  (A0 near 0 = metal = TRIGGER)", "ok");
+        render(true); return;
+      }
+      if (cmd === "MODE HIGH") {
+        detectOnLow = false; metalLatched = false;
+        log(">> MODE=HIGH (A0 above 600 = metal)");
+        render(true); return;
+      }
+      if (cmd === "A1B2C3") {
+        authorized = true; lastAuth = Date.now();
+        log(">> Badge ACCEPTED. Authorized 5 seconds.", "ok");
+        render(true); return;
+      }
+      log(">> Badge REJECTED: " + cmd, "err");
+      render(true);
+    }
+
+    pot.addEventListener("input", () => render(false));
+    $("btn-zero").addEventListener("click", () => { pot.value = 0; render(true); });
+    $("btn-idle").addEventListener("click", () => { pot.value = 573; render(true); });
+    $("btn-mute").addEventListener("click", () => {
+      muted = !muted;
+      $("btn-mute").textContent = muted ? "Unmute buzzer" : "Mute buzzer";
+      if (!muted && !audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      render(false);
+    });
+    $("term-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      runCommand($("term-input").value);
+      $("term-input").value = "";
+    });
+
+    setInterval(() => {
+      $("clock").textContent = new Date().toLocaleTimeString();
+      render(false);
+    }, 250);
+
+    log("=== IRONWATCH GATE ONLINE ===");
+    log("TRIGGER MODE: A0 LOW / ZERO = METAL");
+    log("A0 starts at 0 — alarm is supposed to be ON. That is the fix.");
+    log("Drag RV1 up to clear. Drag back to 0 to trigger again.");
+    log("Badge: type A1B2C3 then Enter.");
+    log("-------------------------------------------");
+    render(true);
+  </script>
+</body>
+</html>
