@@ -29,4 +29,10 @@ Details + acceptance numbers: [`docs/HOW_TO_RUN.md`](docs/HOW_TO_RUN.md).
 
 Overshoot 0.005° → 0.06° · RMS error 0.004° → 0.07° · steady error < 0.03° ·
 peak torque 1.20 → 1.54 N·m (limit 3.04) · peak current 15.7 → 20.2 A (limit 40 A) ·
-peak voltage 4.2 → 4.8 V (supply 24 V). Full trace: `verification/expected_results.txt`.
+peak voltage 4.2 → 4.8 V (supply 24 V). Full trace: `verification/expected_results.txt`
+(formatted exactly as this script prints it — diff your run against it).
+
+**Verification status:** independent numeric replica ✓ · static analysis
+(bracket/param/`fprintf`-arity/Simulink wiring, 56 blocks / 75 lines) ✓ ·
+MATLAB grammar parse of all 3 files ✓ — details in
+[`verification/README.md`](verification/README.md).

@@ -1,83 +1,68 @@
-========================================================================
-GEAR GEOMETRY CROSS-CHECK (standard full-depth teeth: OD=m(z+2), Root=m(z-2.5))
-========================================================================
-  P1: pitch   51.0 (theory   51.0)  OD   57.0 (th   57.0)  root   43.5 (th   43.5)  -> OK
-  G1: pitch  204.0 (theory  204.0)  OD  210.0 (th  210.0)  root  196.5 (th  196.5)  -> OK
-  P2: pitch   64.0 (theory   64.0)  OD   72.0 (th   72.0)  root   54.0 (th   54.0)  -> OK
-  G2: pitch  280.0 (theory  280.0)  OD  288.0 (th  288.0)  root  270.0 (th  270.0)  -> OK
-  P3: pitch   80.0 (theory   80.0)  OD   90.0 (th   90.0)  root   67.5 (th   67.5)  -> OK
-  G3: pitch  320.0 (theory  320.0)  OD  330.0 (th  330.0)  root  307.5 (th  307.5)  -> OK
+=========== GATE GEARBOX PID SIM - DESIGN REPORT ===========
+Gear geometry cross-check (full-depth teeth: OD=m(z+2), root=m(z-2.5)):
+  P1: pitch   51.0 OD   57.0 root   43.5 -> OK
+  G1: pitch  204.0 OD  210.0 root  196.5 -> OK
+  P2: pitch   64.0 OD   72.0 root   54.0 -> OK
+  G2: pitch  280.0 OD  288.0 root  270.0 -> OK
+  P3: pitch   80.0 OD   90.0 root   67.5 -> OK
+  G3: pitch  320.0 OD  330.0 root  307.5 -> OK
 
-========================================================================
-GEAR MASS / INERTIA (hollow cylinder @ pitch radius, steel 7850 kg/m^3)
-========================================================================
-  P1:  mass =   0.280 kg   J = 0.000119 kg m^2
-  G1:  mass =   6.353 kg   J = 0.033365 kg m^2
-  P2:  mass =   0.729 kg   J = 0.000410 kg m^2
-  G2:  mass =  15.290 kg   J = 0.151563 kg m^2
-  P3:  mass =   1.356 kg   J = 0.001238 kg m^2
-  G3:  mass =  23.256 kg   J = 0.321221 kg m^2
-  TOTAL gear mass = 47.26 kg
+Mass / inertia (hollow cylinder @ pitch radius, steel 7850 kg/m^3):
+  P1: mass =   0.280 kg   J = 0.000119 kg m^2
+  G1: mass =   6.353 kg   J = 0.033365 kg m^2
+  P2: mass =   0.729 kg   J = 0.000410 kg m^2
+  G2: mass =  15.290 kg   J = 0.151563 kg m^2
+  P3: mass =   1.356 kg   J = 0.001238 kg m^2
+  G3: mass =  23.256 kg   J = 0.321221 kg m^2
+  TOTAL gear mass = 47.26 kg  (compare with SolidWorks Mass Properties!)
 
-Ratios: i1=4.0000  i2=4.3750  i3=4.0000  N_total=70.0000
-Center distances (check in SolidWorks sketch): 127.5 / 172.0 / 200.0 mm
+Ratios: i1=4.0000 i2=4.3750 i3=4.0000 N_total=70.0000
+Centre distances (verify in SolidWorks sketch): 127.5 / 172.0 / 200.0 mm
 
-Arm: m=13.5 kg L=1.0 m Lc=0.5 m -> J_arm=4.5000 kg m^2, T_grav_max=66.22 N m
-eta_total = 0.96^3 = 0.88474
-J_eff @ output = 21.1302 kg m^2  (arm 4.500 + G3 0.3212 + shaftB 2.4448 + shaftA 10.3435 + motor 3.5207)
+Arm: m=13.5 kg L=1.0 m Lc=0.50 m -> J_arm=4.5000 kg m^2
+Worst-case gravity torque (horizontal) = 66.22 N m
+Efficiency: 0.96^3 = 0.8847 | J_eff @ output = 21.1302 kg m^2
+  (arm 4.500 + G3 0.3212 + shaftB 2.4448 + shaftA 10.3435 + motor 3.5207)
 
-Motor: 24 V 500 W, n_rated=2500 rpm, T_rated=1.910 N m
-  R=0.15 ohm(est) L=0.35 mH(est) Ke=Kt=0.075974 (SI)  J_rotor=0.0006 (est)
-  Holding torque needed @ motor = 1.069 N m = 56.0% of rated  (peak avail 3.04 N m)
+Motor: 24V 500W brushed DC (MY1020 class)
+  24 V 500 W 2500 rpm: T_rated=1.910 N m I_rated=27.4 A
+  R=0.15 ohm L=0.35 mH Ke=Kt=0.075974 J_rotor=6.0e-04 (R,L,Jrot = estimates)
+  Holding torque @ motor = 1.069 N m = 56.0% of rated (peak avail 3.04 N m)
 
-Profile: 90 deg in 6.0 s, t_acc=1.5 s -> v_pk=0.3491 rad/s (20.00 deg/s), a_pk=0.2327 rad/s^2
-Profile self-test: endpoints, peaks, continuity -> OK
+Profile: 90 deg in 6.0 s, t_acc=1.5 s -> v_pk=0.3491 rad/s (20.00 deg/s)
+Gains (wn=8, zeta=1.0): Kp=2253.9 Ki=3606.2 Kd=394.4
 
-Gains (pole place wn=8.0, zeta=1.0, p3=2.667): Kp=2253.9 Ki=3606.2 Kd=394.4
+Simulating (fixed-step RK4 @ 1 kHz, 16 s full cycle) ...
+  done in 3.8 s.
 
-========================================================================
-CLOSED-LOOP RESULTS (nominal plant)
-========================================================================
-  OPEN : overshoot=0.005 deg  settle(0.5deg)=0.00 s  RMS track err=0.004 deg  max err=0.015 deg
-  CLOSE: overshoot=0.005 deg  settle(0.5deg)=0.00 s  RMS track err=0.004 deg  max err=0.015 deg
-  steady-state err (last 1 s) = 0.005 deg
-  peak motor torque = 1.195 N m (39.3% of driver limit)
-  peak current      = 15.73 A (limit 40 A)
-  peak voltage      = 4.15 V (supply 24 V)
-  final angle = -0.004 deg (target 0)
+==================== ACCEPTANCE TESTS ====================
+--- nominal plant ---
+  OPEN : overshoot=0.005 deg settle=0.00 s RMS=0.004 deg
+  CLOSE: overshoot=0.005 deg settle=0.00 s RMS=0.004 deg
+  steady err=0.005 deg peakT=1.195 Nm peakI=15.73 A peakV=4.15 V
+  [PASS] [nominal] overshoot OPEN<=2deg
+  [PASS] [nominal] overshoot CLOSE<=2deg
+  [PASS] [nominal] settle OPEN<=move+2s
+  [PASS] [nominal] settle CLOSE<=move+2s
+  [PASS] [nominal] steady<=0.3deg
+  [PASS] [nominal] peakTq<90%limit
+  [PASS] [nominal] peakI<limit
+  [PASS] [nominal] peakV headroom
+  [PASS] [nominal] RMS<1deg
+--- worst-case plant ---
+  OPEN : overshoot=0.056 deg settle=0.00 s RMS=0.072 deg
+  CLOSE: overshoot=0.036 deg settle=0.00 s RMS=0.061 deg
+  steady err=0.027 deg peakT=1.538 Nm peakI=20.24 A peakV=4.81 V
+  [PASS] [worst-case] overshoot OPEN<=2deg
+  [PASS] [worst-case] overshoot CLOSE<=2deg
+  [PASS] [worst-case] settle OPEN<=move+2s
+  [PASS] [worst-case] settle CLOSE<=move+2s
+  [PASS] [worst-case] steady<=0.5deg
+  [PASS] [worst-case] peakTq<90%limit
+  [PASS] [worst-case] peakI<limit
+  [PASS] [worst-case] peakV headroom
+  [PASS] [worst-case] RMS<1deg
+========================================================
+RESULT: ALL CHECKS PASSED
 
-========================================================================
-ROBUSTNESS RUN (plant: mass 15.5kg, Lc 0.55, J +20%, friction 2x; controller nominal)
-========================================================================
-  OPEN : overshoot=0.056 deg  settle(0.5deg)=0.00 s  RMS track err=0.072 deg  max err=0.159 deg
-  CLOSE: overshoot=0.036 deg  settle(0.5deg)=0.00 s  RMS track err=0.061 deg  max err=0.095 deg
-  steady-state err (last 1 s) = 0.027 deg
-  peak motor torque = 1.538 N m (50.6% of driver limit)
-  peak current      = 20.24 A (limit 40 A)
-  peak voltage      = 4.81 V (supply 24 V)
-  final angle = -0.018 deg (target 0)
-
-========================================================================
-ACCEPTANCE CHECKS
-========================================================================
-  [PASS] [nominal] overshoot OPEN  <= 2.0 deg
-  [PASS] [nominal] overshoot CLOSE <= 2.0 deg
-  [PASS] [nominal] settle OPEN  <= move+2 s
-  [PASS] [nominal] settle CLOSE <= move+2 s
-  [PASS] [nominal] steady err <= 0.3 deg
-  [PASS] [nominal] peak torque < 90% limit
-  [PASS] [nominal] peak current < limit
-  [PASS] [nominal] peak voltage headroom (24V)
-  [PASS] [nominal] RMS track err < 1.0 deg
-  [PASS] [worst-case] overshoot OPEN  <= 2.0 deg
-  [PASS] [worst-case] overshoot CLOSE <= 2.0 deg
-  [PASS] [worst-case] settle OPEN  <= move+2 s
-  [PASS] [worst-case] settle CLOSE <= move+2 s
-  [PASS] [worst-case] steady err <= 0.5 deg
-  [PASS] [worst-case] peak torque < 90% limit
-  [PASS] [worst-case] peak current < limit
-  [PASS] [worst-case] peak voltage headroom (24V)
-  [PASS] [worst-case] RMS track err < 1.0 deg
-========================================================================
-ALL CHECKS PASSED - MATLAB transcription approved
-========================================================================
+Exported gate_tuning.mat (gains + profile for Simulink/hardware).
