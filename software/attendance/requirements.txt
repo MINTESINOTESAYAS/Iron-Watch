@@ -1,0 +1,4 @@
+opencv-contrib-python>=4.8   # contrib is REQUIRED (cv2.face LBPH recogniser)
+numpy>=1.24
+pyserial>=3.5                # ESP32 metal-detector link (optional)
+flask>=3.0                   # web dashboard

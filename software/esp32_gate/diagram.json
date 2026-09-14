@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "author": "Iron-Watch",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0 },
+    { "type": "wokwi-pushbutton", "id": "metal", "top": -80, "left": 250, "attrs": { "color": "red", "label": "METAL" } },
+    { "type": "wokwi-pushbutton", "id": "limOpen", "top": 20, "left": 250, "attrs": { "color": "green", "label": "LIMIT OPEN" } },
+    { "type": "wokwi-pushbutton", "id": "limClosed", "top": 120, "left": 250, "attrs": { "color": "blue", "label": "LIMIT CLOSED" } },
+    { "type": "wokwi-buzzer", "id": "bz", "top": -60, "left": -180 },
+    { "type": "wokwi-led", "id": "ledAlert", "top": 40, "left": -150, "attrs": { "color": "red" } },
+    { "type": "wokwi-led", "id": "ledOk", "top": 120, "left": -150, "attrs": { "color": "green" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": 60, "left": -100, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 140, "left": -100, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "metal:1.l", "esp:34", "red", [] ],
+    [ "metal:2.l", "esp:GND.1", "black", [] ],
+    [ "limOpen:1.l", "esp:32", "green", [] ],
+    [ "limOpen:2.l", "esp:GND.1", "black", [] ],
+    [ "limClosed:1.l", "esp:33", "blue", [] ],
+    [ "limClosed:2.l", "esp:GND.1", "black", [] ],
+    [ "bz:1", "esp:GND.2", "black", [] ],
+    [ "bz:2", "esp:25", "orange", [] ],
+    [ "esp:26", "r1:1", "red", [] ],
+    [ "r1:2", "ledAlert:A", "red", [] ],
+    [ "ledAlert:C", "esp:GND.2", "black", [] ],
+    [ "esp:27", "r2:1", "green", [] ],
+    [ "r2:2", "ledOk:A", "green", [] ],
+    [ "ledOk:C", "esp:GND.2", "black", [] ]
+  ]
+}
