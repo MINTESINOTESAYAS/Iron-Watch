@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<SimscapeMultibodyImportXML version="2.0" xmlns="urn:mathworks:SimscapeMultibody:import" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Created by="" on="09/13/26||02:38:33" using="Simscape Multibody Link Version 7.4" from="SolidWorks 34.3.2"/>
+<ModelUnits mass="kilogram" length="millimeter"/>
+<DataUnits mass="kilogram" length="meter"/>
+<RootAssembly name="Gearbox_Design" uid="Gearbox_Design" version="2125">
+<AssemblyFile name="Gearbox_Design.SLDASM" type="SolidWorks Assembly"/>
+<InstanceTree>
+<Instance name="20mm shaft-1" uid="20mm shaft-1" grounded="true" entityUid="20mm shaft*:*Default">
+<Transform>
+<Rotation>-3.4914813388431334e-15 0 1 0 1 0 -1 0 -3.4914813388431334e-15</Rotation>
+<Translation>0.071231480204857811 0.16740732990712756 -0.15826879894848556</Translation>
+</Transform>
+</Instance>
+<Instance name="casing for gear box-1" uid="casing for gear box-1" grounded="true" entityUid="casing for gear box*:*Default">
+<Transform>
+<Rotation>-4.2237556276146083e-15 -3.1396978345232765e-15 1 -0.0038026681391757121 0.9999927698313742 3.1236135930257052e-15 -0.9999927698313742 -0.0038026681391757121 -4.2356643180711671e-15</Rotation>
+<Translation>0.046231480204857976 0.48190413417259631 -0.1599495782660009</Translation>
+</Transform>
+</Instance>
+<Instance name="90mm shaft-5" uid="90mm shaft-5" entityUid="90mm shaft*:*Default">
+<Transform>
+<Rotation>7.500565573613029e-16 3.8425035004201968e-16 1 -0.99999418857546796 0.0034092250280378785 7.4874220255382823e-16 -0.0034092250280378785 -0.99999418857546796 3.8680522858790702e-16</Rotation>
+<Translation>0.056231480204855612 0.85940732990705571 -0.15826879894854443</Translation>
+</Transform>
+</Instance>
+<Instance name="Pinion 2-1" uid="Pinion 2-1" entityUid="Pinion 2*:*ISO - Spur gear 4M 16T 20PA 25FW ---S16A75H50L20.0N">
+<Transform>
+<Rotation>1 3.4465542678704585e-15 -2.4644896576277207e-16 0 -0.083503336697560757 -0.99650749759365798 -3.4550964797631874e-15 0.99650749759365798 -0.083503336697560757</Rotation>
+<Translation>0.10323148020485723 0.16740732990712595 -0.15826879894848772</Translation>
+</Transform>
+</Instance>
+<Instance name="Gear 2-1" uid="Gear 2-1" entityUid="Gear 2*:*ISO - Spur gear 4M 70T 20PA 25FW ---S70A75H50L30.0N">
+<Transform>
+<Rotation>1 -3.252618445782484e-15 1.7995916082584146e-15 -1.2579180800297437e-15 0.15945551806716426 0.98720511432930291 -3.4979563768424643e-15 -0.98720511432930291 0.15945551806716426</Rotation>
+<Translation>0.10323148020485781 0.33940732990712524 -0.15826879894848972</Translation>
+</Transform>
+</Instance>
+<Instance name="Pinion 3-1" uid="Pinion 3-1" entityUid="Pinion 3*:*ISO - Spur gear 5M 16T 20PA 25FW ---S16A75H50L30.0N">
+<Transform>
+<Rotation>1 -9.5759906904836533e-16 -3.8856637714225768e-15 -8.1742477049144507e-16 -0.99935482180490498 0.035915736596748238 -3.9175497018130169e-15 -0.035915736596748238 -0.99935482180490498</Rotation>
+<Translation>0.056231480204857805 0.33940732990712524 -0.15826879894848953</Translation>
+</Transform>
+</Instance>
+<Instance name="30mm shaft-1" uid="30mm shaft-1" entityUid="30mm shaft*:*Default">
+<Transform>
+<Rotation>3.2444720970110148e-15 -2.3428144897331827e-15 1 -0.40748210693882425 -0.91321319116879629 -8.1742477049146124e-16 0.91321319116879629 -0.40748210693882425 -3.9175497018128292e-15</Rotation>
+<Translation>0.056231480204857805 0.33940732990712524 -0.15826879894848953</Translation>
+</Transform>
+</Instance>
+<Instance name="27mm shaft-1" uid="27mm shaft-1" entityUid="27mm shaft*:*Default">
+<Transform>
+<Rotation>-4.424495519745971e-15 -2.0070944157999436e-15 1 -0.090252660995153416 0.99591890090674262 1.5995807703813327e-15 -0.99591890090674262 -0.090252660995153416 -4.5875843269866739e-15</Rotation>
+<Translation>0.046231480204857789 0.039907329907130522 -0.15826879894848464</Translation>
+</Transform>
+</Instance>
+<Instance name="Gear 3 (Arm)-1" uid="Gear 3 (Arm)-1" entityUid="Gear 3 (Arm)*:*ISO - Spur gear 5M 64T 20PA 40FW ---S64A75H50L40.0N">
+<Transform>
+<Rotation>-1 -4.1699563359046887e-16 -1.1840483123422459e-15 -7.122051120066304e-16 -0.58825967470354956 0.80867209369290971 -1.0337406071281422e-15 0.80867209369290971 0.58825967470354956</Rotation>
+<Translation>0.096231480204857806 0.53940732990712625 -0.15826879894848866</Translation>
+</Transform>
+</Instance>
+<Instance name="pinion 1 (motor)-1" uid="pinion 1 (motor)-1" entityUid="pinion 1 (motor)*:*ISO - Spur gear 3M 17T 20PA 25FW ---S17A75H50L28.0R1">
+<Transform>
+<Rotation>1 3.8781849164444187e-15 -1.7252028565535205e-15 2.1013626261532423e-15 -0.80547309957610869 -0.59263233615729782 -3.6879422793481722e-15 0.59263233615729782 -0.80547309957610869</Rotation>
+<Translation>0.071231480204857811 0.03990732990713055 -0.15826879894848478</Translation>
+</Transform>
+</Instance>
+<Instance name="minishaft-1" uid="minishaft-1" entityUid="minishaft*:*Default">
+<Transform>
+<Rotation>2.2237290421365041e-15 1.1061413589603419e-15 1 -0.6611123747198373 0.75028689712155938 6.4021141978814415e-16 -0.75028689712155938 -0.6611123747198373 2.399718503661795e-15</Rotation>
+<Translation>0.056231480204857805 0.53940732990712625 -0.15826879894848872</Translation>
+</Transform>
+</Instance>
+<Instance name="Gear 3 (Arm)-2" uid="Gear 3 (Arm)-2" entityUid="Gear 3 (Arm)*:*ISO - Spur gear 5M 64T 20PA 40FW ---S64A75H50L40.0N">
+<Transform>
+<Rotation>1 -3.5616760350223301e-15 0 2.7931188224153388e-15 0.77910270021071071 0.62689630922855111 -2.2101735136616386e-15 -0.62689630922855111 0.77910270021071071</Rotation>
+<Translation>0.056231480204855001 0.85940732990705537 -0.15826879894854143</Translation>
+</Transform>
+</Instance>
+<Instance name="grip-1" uid="grip-1" entityUid="grip*:*Default">
+<Transform>
+<Rotation>1 -2.1158445592750227e-15 1.6229612775686842e-15 2.121365303411065e-15 0.99999418857546785 -0.0034092250280363507 -1.6157384556247879e-15 0.0034092250280363507 0.99999418857546785</Rotation>
+<Translation>0.19373148020485523 0.85927607474347645 -0.11976902268838623</Translation>
+</Transform>
+</Instance>
+<Instance name="handle-1" uid="handle-1" entityUid="handle*:*Default">
+<Transform>
+<Rotation>1 -2.8649327386254699e-15 1.5910700600452475e-15 2.8703404051551342e-15 0.99999418857546785 -0.0034092250280363507 -1.5812936132655073e-15 0.0034092250280363507 0.99999418857546785</Rotation>
+<Translation>0.25123148020485508 0.8595607450333177 -0.20326853743443787</Translation>
+</Transform>
+</Instance>
+<Instance name="gear 1-1" uid="gear 1-1" entityUid="gear 1*:*ISO - Spur gear 3M 68T 20PA 25FW ---S68A75H50L20.0N">
+<Transform>
+<Rotation>1 -1.3444656412046682e-15 3.2219393148439177e-15 0 0.92286577882510135 0.38512173954937895 -3.491200481625759e-15 -0.38512173954937895 0.92286577882510135</Rotation>
+<Translation>0.071231480204846154 0.16740732990712595 -0.1582687989484875</Translation>
+</Transform>
+</Instance>
+</InstanceTree>
+<Constraints>
+<Concentric name="Concentric1">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>gear 1-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>20mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.080000000000000016</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Concentric name="Concentric2">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Pinion 2-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>20mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.080000000000000016</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident3">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>gear 1-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>20mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident5">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Pinion 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000001 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>20mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.064000000000000001</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident7">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Pinion 3-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>30mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident8">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000015 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>30mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.079000000000000001</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric7">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gear 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000015 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>30mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.079000000000000001</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Concentric name="Concentric18">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Pinion 3-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>30mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident12">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>gear 1-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>pinion 1 (motor)-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric10">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>pinion 1 (motor)-1</Uid>
+</InstancePath>
+<Position>0.024999999999999994 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>27mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.050000000000000003</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident13">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>pinion 1 (motor)-1</Uid>
+</InstancePath>
+<Position>0.024999999999999994 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>27mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.050000000000000003</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric12">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>gear 1-1</Uid>
+</InstancePath>
+<Position>0.024999999999999994 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Pinion 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000001 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Concentric name="Concentric13">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>pinion 1 (motor)-1</Uid>
+</InstancePath>
+<Position>0.024999999999999994 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gearbox_Design</Uid>
+</InstancePath>
+<Position>0.096231480204846759 0.039907329907127448 -0.15826879894848569</Position>
+<Axis>1 1.4438431612502769e-15 -2.7870619266945502e-15</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident19">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000015 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Pinion 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000001 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric15">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>30mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.088999999999999982</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gearbox_Design</Uid>
+</InstancePath>
+<Position>0.13523148020485676 0.33940732990712708 -0.15826879894848583</Position>
+<Axis>1 3.3151277038240282e-16 -3.5324085105139129e-15</Axis>
+</ConstraintGeometry>
+</Concentric>
+<UnknownConstraint name="GearMate11">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Pinion 2-1</Uid>
+</InstancePath>
+<Position>-0.009999999999999995 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 2-1</Uid>
+</InstancePath>
+<Position>0.032000000000000015 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</UnknownConstraint>
+<Coincident name="Coincident23">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0.040000000000000008 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Pinion 3-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric16">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0.040000000000000008 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gearbox_Design</Uid>
+</InstancePath>
+<Position>0.056231480204858186 0.53940732990712714 -0.15826879894848561</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Concentric>
+<UnknownConstraint name="GearMate12">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Pinion 3-1</Uid>
+</InstancePath>
+<Position>0.040000000000000008 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>-0.009999999999999995 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</UnknownConstraint>
+<Concentric name="Concentric20">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>27mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>casing for gear box-1</Uid>
+</InstancePath>
+<Position>0 -0.44200000000000006 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident24">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>27mm shaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>casing for gear box-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric21">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0.050000050800000001 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>minishaft-1</Uid>
+</InstancePath>
+<Position>0 0 0.040000000000000008</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident25">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0.040000000000000008 0 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>minishaft-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric22">
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gear 3 (Arm)-2</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gearbox_Design</Uid>
+</InstancePath>
+<Position>0.056231480204858568 0.8594073299070446 -0.15826879894848564</Position>
+<Axis>-1 0 -2.0128819443930008e-15</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident26">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 3 (Arm)-2</Uid>
+</InstancePath>
+<Position>0.040000000000000001 1.1102230246251565e-16 0</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric24">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 3 (Arm)-2</Uid>
+</InstancePath>
+<Position>0.050000050799999994 1.1102230246251565e-16 -1.1102230246251565e-16</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+</Concentric>
+<UnknownConstraint name="GearMate19">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>pinion 1 (motor)-1</Uid>
+</InstancePath>
+<Position>-0.010000000000000002 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>gear 1-1</Uid>
+</InstancePath>
+<Position>0.024999999999999994 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</UnknownConstraint>
+<UnknownConstraint name="GearMate20">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 3 (Arm)-1</Uid>
+</InstancePath>
+<Position>0.040000000000000008 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Gear 3 (Arm)-2</Uid>
+</InstancePath>
+<Position>-0.010000000000000002 1.1102230246251565e-16 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</UnknownConstraint>
+<Coincident name="Coincident37">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Gear 3 (Arm)-2</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Concentric36">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>1.1102230246251565e-16 0 0.34000000000000019</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="circle">
+<InstancePath>
+<Uid>Gearbox_Design</Uid>
+</InstancePath>
+<Position>0.16373148020485678 0.85940732990705537 -0.15826879894854226</Position>
+<Axis>1 3.1236135930257052e-15 -4.2356643180711671e-15</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Coincident41">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>-0.010000000000000009 0 0.15500000000000011</Position>
+<Axis>1.0000000000000002 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>0 0.010000000000000009 0.089999999999999997</Position>
+<Axis>0 1.0000000000000002 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Tangent name="Tangent3">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>1.1102230246251565e-16 0 0.34000000000000019</Position>
+<Axis>0 0 -1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 1.0000000000000002</Axis>
+</ConstraintGeometry>
+</Tangent>
+<Coincident name="Coincident42">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>90mm shaft-5</Uid>
+</InstancePath>
+<Position>-0.0099999999999998979 -0.045000000000000276 0.12000000000000013</Position>
+<Axis>0 0 1</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>-0.074999999999999983 -2.2204460492503131e-16 0.089999999999999997</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident43">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>-0.070000000000000007 0.0059999999999998943 0.083499999999999977</Position>
+<Axis>0 0 1.0000000000000002</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>grip-1</Uid>
+</InstancePath>
+<Position>0 0 0</Position>
+<Axis>0 0 -1.0000000000000002</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident44">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>-0.069999999999999979 -0.011000000000000121 0.091499999999999998</Position>
+<Axis>1.3877787807814407e-16 1.0000000000000002 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>grip-1</Uid>
+</InstancePath>
+<Position>0 -0.01100000000000001 0.0064999999999999919</Position>
+<Axis>0 -1.0000000000000002 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Coincident name="Coincident46">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>grip-1</Uid>
+</InstancePath>
+<Position>0.017500000000000016 0 0.0065000000000000058</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>handle-1</Uid>
+</InstancePath>
+<Position>-0.040000000000000008 -0.0060000000000001164 0.091499999999999998</Position>
+<Axis>-1 0 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+</Constraints>
+</RootAssembly>
+<Assemblies>
+</Assemblies>
+<Parts>
+<Part name="20mm shaft" uid="20mm shaft*:*Default" version="133">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="20mm shaft.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.02491492413806946</Mass>
+<CenterOfMass>0 0 0.03932262945527909</CenterOfMass>
+<Inertia>1.3165513693828734e-05 1.3165513693828734e-05 1.2845176490389759e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="20mm shaft_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Diffuse r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Specular r="0.44705882352941173" g="0.44705882352941173" b="0.44705882352941173" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="27mm shaft" uid="27mm shaft*:*Default" version="105">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="27mm shaft.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.028627763055836995</Mass>
+<CenterOfMass>0 0 0.024999999999999998</CenterOfMass>
+<Inertia>7.2684697575309451e-06 7.2684697575309451e-06 2.608704908463145e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="27mm shaft_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Diffuse r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Specular r="0.44705882352941173" g="0.44705882352941173" b="0.44705882352941173" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="30mm shaft" uid="30mm shaft*:*Default" version="128">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="30mm shaft.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.071989595657010089</Mass>
+<CenterOfMass>0 0 0.050524929085751701</CenterOfMass>
+<Inertia>6.4036238669708842e-05 6.4036238669708842e-05 8.2303208719296354e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="30mm shaft_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Diffuse r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Specular r="0.44705882352941173" g="0.44705882352941173" b="0.44705882352941173" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="90mm shaft" uid="90mm shaft*:*Default" version="238">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="90mm shaft.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>4.5700670198111393</Mass>
+<CenterOfMass>0 0 0.1488091505854639</CenterOfMass>
+<Inertia>0.042962313217435162 0.043572996775179271 0.0048702057891731442 0 0 4.3052500401819871e-09</Inertia>
+</MassProperties>
+<GeometryFile name="90mm shaft_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Diffuse r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Specular r="0.43333333333333335" g="0.45490196078431372" b="0.5" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Gear 2" uid="Gear 2*:*ISO - Spur gear 4M 70T 20PA 25FW ---S70A75H50L30.0N" version="1698">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Gear 2.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>1.9312942491524101</Mass>
+<CenterOfMass>0.016000000000000007 0 0</CenterOfMass>
+<Inertia>0.019037326290714592 0.0096834669212849823 0.009683466921284958 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gear 2_ISO - Spur gear 4M 70T 20PA 25FW ---S70A75H50L30.0N_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Gear 3 (Arm)" uid="Gear 3 (Arm)*:*ISO - Spur gear 5M 64T 20PA 40FW ---S64A75H50L40.0N" version="1736">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Gear 3 (Arm).SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>2.9320973045470691</Mass>
+<CenterOfMass>0.020000000000000004 0 0</CenterOfMass>
+<Inertia>0.040276729508500392 0.020529311061523146 0.020529311061523128 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gear 3 (Arm)_ISO - Spur gear 5M 64T 20PA 40FW ---S64A75H50L40.0N_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Pinion 2" uid="Pinion 2*:*ISO - Spur gear 4M 16T 20PA 25FW ---S16A75H50L20.0N" version="1723">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Pinion 2.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.088448514492288619</Mass>
+<CenterOfMass>0.016 0 0</CenterOfMass>
+<Inertia>5.0428110289262253e-05 3.2761661714639788e-05 3.2761661714639727e-05 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Pinion 2_ISO - Spur gear 4M 16T 20PA 25FW ---S16A75H50L20.0N_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Pinion 3" uid="Pinion 3*:*ISO - Spur gear 5M 16T 20PA 25FW ---S16A75H50L30.0N" version="1688">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Pinion 3.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.16390693140011345</Mass>
+<CenterOfMass>0.02 0 0</CenterOfMass>
+<Inertia>0.00015192330778340316 9.7815911411716806e-05 9.781591141171663e-05 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Pinion 3_ISO - Spur gear 5M 16T 20PA 25FW ---S16A75H50L30.0N_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="casing for gear box" uid="casing for gear box*:*Default" version="373">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="casing for gear box.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>10.431282163910371</Mass>
+<CenterOfMass>-0.0072209333229242712 0.0070687812436834741 0.062211424656191977</CenterOfMass>
+<Inertia>1.5333168746648131 0.18780573891647512 1.6625251872311142 -0.0067975335189088583 0.0059550958319271961 0.012347123723868215</Inertia>
+</MassProperties>
+<GeometryFile name="casing for gear box_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Diffuse r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Specular r="0.43333333333333335" g="0.45490196078431372" b="0.5" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="gear 1" uid="gear 1*:*ISO - Spur gear 3M 68T 20PA 25FW ---S68A75H50L20.0N" version="1676">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="gear 1.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.80175096388855149</Mass>
+<CenterOfMass>0.012500000000000001 0 0</CenterOfMass>
+<Inertia>0.0041844669249984021 0.0021339913252017297 0.0021339913252017297 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="gear 1_ISO - Spur gear 3M 68T 20PA 25FW ---S68A75H50L20.0N_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="grip" uid="grip*:*Default" version="164">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="grip.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>8.1654873338617868</Mass>
+<CenterOfMass>0 6.3679487877687453e-05 0.50941101233910235</CenterOfMass>
+<Inertia>0.50569582334316621 0.49703893904884416 0.0098996466310977069 -0.00021551053716803559 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="grip_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Diffuse r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Specular r="0.43333333333333335" g="0.45490196078431372" b="0.5" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="handle" uid="handle*:*Default" version="239">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="handle.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.84270972075480621</Mass>
+<CenterOfMass>0.0016193910772786656 0 0.043740677105422149</CenterOfMass>
+<Inertia>0.00078918557814991127 0.0023302753573598597 0.001610861807901295 0 -6.224297277658787e-05 0</Inertia>
+</MassProperties>
+<GeometryFile name="handle_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Diffuse r="0.8666666666666667" g="0.90980392156862744" b="1" a="1"/>
+<Specular r="0.43333333333333335" g="0.45490196078431372" b="0.5" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="minishaft" uid="minishaft*:*Default" version="106">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="minishaft.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.25446900494077318</Mass>
+<CenterOfMass>0 0 0.02</CenterOfMass>
+<Inertia>0.00016275413441003611 0.00016275413441003611 0.00025764986750253269 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="minishaft_Default_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Diffuse r="0.89411764705882346" g="0.89411764705882346" b="0.89411764705882346" a="1"/>
+<Specular r="0.44705882352941173" g="0.44705882352941173" b="0.44705882352941173" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="pinion 1 (motor)" uid="pinion 1 (motor)*:*ISO - Spur gear 3M 17T 20PA 25FW ---S17A75H50L28.0R1" version="1886">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="pinion 1 (motor).SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.032811698167278608</Mass>
+<CenterOfMass>0.012500000000000002 -0.0003310506295028215 0</CenterOfMass>
+<Inertia>1.428527195332445e-05 8.9362420334952733e-06 8.7669151455873624e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="pinion 1 (motor)_ISO - Spur gear 3M 17T 20PA 25FW ---S17A75H50L28.0R1_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Diffuse r="1" g="0.94901960784313721" b="0.90980392156862744" a="1"/>
+<Specular r="0.5" g="0.47450980392156861" b="0.45490196078431372" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+</Parts>
+</SimscapeMultibodyImportXML>
