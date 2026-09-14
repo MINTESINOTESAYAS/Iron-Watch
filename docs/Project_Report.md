@@ -9,19 +9,21 @@
 | Submitted to | Department of Electromechanical Engineering, AASTU |
 | Duration | [Start Date] to [End Date] |
 | Organization | [Company Name], [Company Location] |
-| Date | September 2026 |
+| Date | 14 September 2026 |
 
 ---
 
 ## Abstract
 
-This report presents the design, modelling, simulation and prototype implementation of **Iron-Watch**, an integrated worker access gate for a metal-processing factory. The system combines four subsystems: (1) a walk-through metal detector at the gate, (2) a camera-based worker identification unit using OpenCV face recognition, (3) an entry/exit attendance logger backed by an SQLite database and a web dashboard, and (4) a central ESP32 gate controller that drives a motorised boom arm and raises alerts. The mechanical drive — a 1.0 m, 13.5 kg boom arm actuated by a 24 V 500 W DC motor through a three-stage 70:1 spur gearbox designed in SolidWorks — was modelled in MATLAB/Simulink as an inertia-plus-friction load and closed under PID control designed by second-order pole placement (ω<sub>n</sub> = 5 rad/s, ζ = 0.9). Simulation shows the arm completing the 0→90° opening in 2.5 s with a peak tracking error of 3.1°, a final error below 0.2° and a peak motor current of 7.4 A against a 30 A limit. The software prototype was validated end-to-end: enrolled workers are recognised with an LBPH distance of 10–17 while a stranger is rejected at 77 (threshold 70), and each pass is logged as IN/OUT with the metal-detector state attached.
+This report presents the design, modelling, simulation and prototype implementation of **Iron-Watch**, an integrated worker access gate for a metal-processing factory. The system combines four subsystems: (1) a walk-through metal detector at the gate, (2) a camera-based worker identification unit using OpenCV face recognition, (3) an entry/exit attendance logger backed by an SQLite database and a web dashboard, and (4) a central ESP32 gate controller that drives a motorised boom arm and raises alerts. The mechanical drive — a 1.0 m, 13.5 kg boom arm actuated by a 24 V 500 W DC motor through a three-stage 70:1 spur gearbox designed in SolidWorks — was modelled in MATLAB/Simulink as an inertia-plus-friction load and closed under PID control designed by second-order pole placement (ω<sub>n</sub> = 5 rad/s, ζ = 0.9). Simulation shows the arm completing the 0→90° opening in 2.5 s with a peak tracking error of 2.6°, a final error below 0.2° and a peak motor current of 7.4 A against a 30 A limit. The software prototype was validated end-to-end: enrolled workers are recognised with an LBPH distance of 10–17 while a stranger is rejected at 77 (threshold 70), and each pass is logged as IN/OUT with the metal-detector state attached.
 
 **Keywords:** access control, metal detector, face recognition, OpenCV, LBPH, attendance logging, DC motor, gearbox, PID, Simulink, ESP32, mechatronics
 
 ---
 
 ## Contents
+
+List of Figures: 1 Architecture · 2 Gate response · 3 Speed & voltage · 4 Pole map
 
 1. Introduction
 2. Literature Review
@@ -106,25 +108,9 @@ MATLAB/Simulink allows the drive to be sized and the controller tuned before har
 
 ### 3.1 System Architecture
 
-```
-                 ┌──────────────────────┐
-  Worker ───────►│ Walk-through metal   │ relay contact
-                 │ detector             ├───────────────┐
-                 └──────────────────────┘               │
-                                                        ▼
-  ┌───────────┐   USB / RTSP   ┌──────────────┐  serial  ┌──────────────────┐
-  │ Camera    ├───────────────►│ PC / edge PC │◄────────►│ ESP32 gate       │
-  │ (gate)    │                │ OpenCV LBPH  │  OPEN /  │ controller       │
-  └───────────┘                │ attendance.py│  METAL   │ buzzer, LEDs,    │
-                               └──────┬───────┘          │ BTS7960 H-bridge │
-                                      │ SQLite           └────────┬─────────┘
-                               ┌──────▼───────┐                   │ 24 V PWM
-                               │ attendance.db│          ┌────────▼─────────┐
-                               │ Flask        │          │ DC motor 500 W   │
-                               │ dashboard    │          │ 70:1 gearbox     │
-                               └──────────────┘          │ 1.0 m boom arm   │
-                                                         └──────────────────┘
-```
+![Figure 1: Iron-Watch system architecture](figures/fig0_architecture.png)
+
+*Figure 1 — System architecture.*
 
 Both the simulation build and the real-world build use the same four subsystems: **metal detection**, **worker identification**, **entry/exit logging**, and **central controller + alerts/database**.
 
@@ -159,15 +145,15 @@ Trapezoidal move: 90° in 2.5 s with 0.6 s ramps → cruise 47.4°/s (0.827 rad/
 
 With torques referred to the arm shaft and the arm assumed balanced (no gravity term):
 
-**Mechanical:** J<sub>eff</sub> θ̈ = N η K<sub>t</sub> i − b θ̇
+**Mechanical:** J<sub>eff</sub> θ″ = N η K<sub>t</sub> i − b θ′
 
-**Electrical:** L di/dt = V − R i − K<sub>e</sub> N θ̇
+**Electrical:** L di/dt = V − R i − K<sub>e</sub> N θ′
 
 Open-loop transfer function (current-controlled motor):
 
 G(s) = θ(s)/τ(s) = 1 / (J s² + b s), poles at s = 0 and s = −b/J = −0.057 → marginally stable, so position feedback is required.
 
-State-space, x = [θ, θ̇]ᵀ, u = τ:
+State-space, x = [θ, θ′]ᵀ, u = τ:
 
 A = [0 1; 0 −b/J], B = [0; 1/J], C = [1 0]. rank[B AB] = 2 (controllable), rank[C; CA] = 2 (observable).
 
@@ -240,15 +226,25 @@ A Flask page (`dashboard.py`) shows per-worker first-IN/last-OUT/hours for a cho
 | Metric | Value | Requirement |
 |---|---|---|
 | Move time (0 → 90°) | 2.5 s | ≤ 3 s |
-| Peak tracking error during move | 3.1° | ≤ 5° |
+| Peak tracking error during move | 2.6° | ≤ 5° |
 | Final angle | 89.9° (error 0.12°) | ≤ 0.5° |
 | Peak motor current | 7.4 A | ≤ 30 A driver limit |
 | Peak voltage | 5.3 V | ≤ 24 V supply |
 | Closed-loop poles | −4.21 ± 1.38 j, −0.64 | all LHP |
 
-The arm follows the trapezoidal reference with a lag of about 3° during the constant-velocity phase (expected from the finite bandwidth, ω<sub>n</sub> = 5 rad/s) and converges to the target with no overshoot. Current and voltage are far from their limits, confirming the 500 W motor is over-sized for the balanced-arm case and would remain adequate if gravity, Coulomb friction or wind load were added later.
+The arm follows the trapezoidal reference with a lag of about 2.6° during the constant-velocity phase (expected from the finite bandwidth, ω<sub>n</sub> = 5 rad/s) and converges to the target with no overshoot. Current and voltage are far from their limits, confirming the 500 W motor is over-sized for the balanced-arm case and would remain adequate if gravity, Coulomb friction or wind load were added later.
 
-*(Insert Figure 1: `gate_sim.m` angle/error/current plot. Insert Figure 2: Simulink `gate_pid.slx` block diagram and scope.)*
+![Figure 2](figures/fig1_gate_response.png)
+
+*Figure 2 — Arm angle, tracking error and motor current (`gate_sim.m`).*
+
+![Figure 3](figures/fig2_speed_voltage.png)
+
+*Figure 3 — Arm speed vs. reference and motor terminal voltage.*
+
+![Figure 4](figures/fig3_poles.png)
+
+*Figure 4 — Open-loop poles (0, −0.057) and closed-loop poles (−4.21 ± 1.38j, −0.64).*
 
 ### 4.2 Simulink model (`build_gate_simulink.m`)
 The script builds `gate_pid.slx` with 30 blocks in four labelled sections — Reference, PID controller, DC motor, Gearbox + arm — using the same parameters as `gate_params.m`, solver ode4 at 1 ms. Its scopes reproduce the MATLAB result.
@@ -266,7 +262,7 @@ The software chain was tested end-to-end:
 | Logging | E001 IN → E002 IN (metal flag) → E001 OUT toggled correctly |
 | Dashboard | daily summary and event list served, HTTP 200 |
 
-*(Insert Figure 3: attendance window with green/red boxes. Figure 4: dashboard screenshot. Figure 5: Wokwi ESP32 simulation.)*
+*(Add screenshots at submission: attendance window with green/red boxes, dashboard page, Wokwi ESP32 simulation, Simulink `gate_pid.slx` diagram.)*
 
 ### 4.4 Discussion
 - **Model simplification.** Removing the gravity term is valid for a counter-balanced arm or one pivoting in a horizontal plane; for an unbalanced vertical arm a feed-forward term m g L<sub>c</sub> cos θ (≈ 66 N·m at horizontal) should be added — the motor still has 3× margin for it.
