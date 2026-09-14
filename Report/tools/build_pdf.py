@@ -243,8 +243,20 @@ with open(os.path.join(ROOT, "tools", "report_render.html"), "w") as f:
     f.write(doc)
 
 with open(OUT, "wb") as f:
-    result = pisa.CreatePDF(doc, dest=f, path_callback=lambda u, rel: u,
-                            encoding="utf-8")
+    def _link(uri, rel):
+        if uri.startswith("file://"):
+            return uri[7:]
+        return uri
+    kw = {}
+    try:   # xhtml2pdf >= 0.2.18 sandboxes local reads to one directory; allow the Report/ tree
+        from xhtml2pdf.config.resources import ResourceAccessPolicy
+        kw["resource_policy"] = ResourceAccessPolicy(base_dir=ROOT)
+    except Exception:
+        pass
+    try:
+        result = pisa.CreatePDF(doc, dest=f, link_callback=_link, encoding="utf-8", **kw)
+    except TypeError:
+        result = pisa.CreatePDF(doc, dest=f, path_callback=lambda u, rel: u, encoding="utf-8")
 print("PDF errors:", result.err, "| pages:", getattr(result, "page", "?"))
 
 # Post-process: named-page empty footer is ignored by pisa, so blank the

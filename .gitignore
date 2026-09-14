@@ -8,3 +8,6 @@ __pycache__/
 # Intermediate Simulink thumbnail extraction artifacts
 Report/figures/*_crop.png
 Report/figures/*_raw.png
+
+# Attendance software runtime data (face samples, model, database)
+software/attendance/data/

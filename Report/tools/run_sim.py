@@ -8,7 +8,8 @@ It reproduces, number-for-number:
   * gate_params()  -- gear geometry/masses/inertias, reflected inertia,
                       motor constants, trapezoidal profile, PID gains
   * gate_sim.m     -- fixed-step (1 ms, Euler) closed-loop opening move with
-                      PID + gravity feed-forward, current/voltage saturation
+                      PID (no gravity term: inertia + viscous friction plant),
+                      current/voltage saturation
                       and conditional-integration anti-windup
 It additionally performs (clearly labelled) verification runs:
   * a robustness run with +15 % arm mass, +20 % inertia, 2 x friction
@@ -118,7 +119,8 @@ print(f"Gains: Kp={Kp:.3f} Ki={Ki:.3f} Kd={Kd:.3f}")
 # ----------------------------------------------------------------------
 # Exact port of gate_sim.m (opening move, Euler 1 ms, 0..8 s)
 # ----------------------------------------------------------------------
-def run_open(m=m_arm, J=J_eff, b=b_fric, T_end=8.0):
+I_clamp = 300.0
+def run_open(m=m_arm, J=J_eff, b=b_fric, T_end=6.0):
     dt = 1e-3
     t = np.arange(0, T_end+dt/2, dt)
     n = t.size
@@ -127,23 +129,23 @@ def run_open(m=m_arm, J=J_eff, b=b_fric, T_end=8.0):
     for k in range(n-1):
         thr, wr = trap_ref(t[k]); th_r[k] = thr; w_r[k] = wr
         e = thr-th[k]; de = wr-w[k]
-        tau_ff = m*g*Lc*math.cos(th[k])
-        tau_cmd = tau_ff + Kp*e + Ki*e_int + Kd*de
+        e_int = float(np.clip(e_int + e*dt, -I_clamp/Ki, I_clamp/Ki))   # clamped integral
+        tau_cmd = Kp*e + Ki*e_int + Kd*de
         i_cmd = tau_cmd/(N*eta*Kt)
         i_cmd = np.clip(i_cmd, -I_max, I_max)
-        if abs(i_cmd) < I_max: e_int += e*dt
         V_cmd = i_cmd*R + Ke*N*w[k]
         V_cmd = np.clip(V_cmd, -V, V)
         didt = (V_cmd - R*cur[k] - Ke*N*w[k])/Lmot
         cur[k+1] = cur[k]+didt*dt
         tau_out = N*eta*Kt*cur[k+1]
-        wdot = (tau_out - b*w[k] - m*g*Lc*math.cos(th[k]))/J
+        wdot = (tau_out - b*w[k])/J
         w[k+1] = w[k]+wdot*dt
         th[k+1] = th[k]+w[k+1]*dt
     th_r[-1] = theta_target
-    return t, th, w, cur, th_r, w_r
+    volt = cur*R + Ke*N*w
+    return t, th, w, cur, th_r, w_r, volt
 
-t, th, om, cur, thr, omr = run_open()
+t, th, om, cur, thr, omr, volt_open = run_open()
 err = thr-th
 metrics = dict(
     N=N, i1=i1, i2=i2, i3=i3, eta=eta,
@@ -159,13 +161,15 @@ metrics = dict(
     final_angle_deg=math.degrees(th[-1]),
     peak_error_deg=math.degrees(np.max(np.abs(err))),
     peak_current_A=float(np.max(np.abs(cur))),
+    peak_voltage_V=float(np.max(np.abs(volt_open))),
+    T_acc_req=float(J_eff*a_pk + b_fric*v_pk),
 )
 mv = t <= T_move+2
 overshoot = math.degrees(max(0, np.max(th[mv])-theta_target))
 outside = t[mv & (np.abs(thr-th) > math.radians(0.5))]
 settle = float(outside.max()) if outside.size else 0.0
 rms = math.degrees(np.sqrt(np.mean((thr[t<=T_move]-th[t<=T_move])**2)))
-steady = math.degrees(np.mean(np.abs(thr[t>=7]-th[t>=7])))
+steady = math.degrees(np.mean(np.abs(thr[t>=5]-th[t>=5])))
 metrics.update(overshoot_open_deg=overshoot, settle_open_s=settle,
                rms_open_deg=rms, steady_state_err_deg=steady)
 print(f"\nOPEN: final={math.degrees(th[-1]):.3f} deg peak_err={math.degrees(np.max(np.abs(err))):.3f} deg")
@@ -173,7 +177,7 @@ print(f"overshoot={overshoot:.3f} deg settle={settle:.2f} s RMS={rms:.3f} deg "
       f"steady={steady:.4f} deg peakI={np.max(np.abs(cur)):.2f} A")
 
 # ---- robustness (+15 % mass, +20 % J, 2 x friction) ----
-tR, thR, wR, curR, thrR, _ = run_open(m=1.15*m_arm, J=1.20*J_eff, b=2*b_fric)
+tR, thR, wR, curR, thrR, _, _ = run_open(m=1.15*m_arm, J=1.20*J_eff, b=2*b_fric)
 errR = thrR-thR
 rmsR = math.degrees(np.sqrt(np.mean((thrR[t<=T_move]-thR[t<=T_move])**2)))
 ovR = math.degrees(max(0, np.max(thR[t<=T_move+2])-theta_target))
@@ -215,17 +219,15 @@ def run_cycle(m=m_arm, J=J_eff, b=b_fric, tc=0.0):
     for k in range(n-1):
         thk,wk=X[k]; thr_,wr,ar=ref_cycle(T[k]); RE[k]=thr_,wr,ar
         e=thr_-thk; de=wr-wk
-        ff=m*g*Lc*math.cos(thk)+J*ar+b*wr+tc*np.tanh(wr/0.05)
-        tau=Kp*e+Ki*eint+Kd*de+ff
+        eint = float(np.clip(eint + e*dt, -I_clamp/Ki, I_clamp/Ki))
+        tau=Kp*e+Ki*eint+Kd*de                     # plain PID, same as gate_sim.m
         ic=np.clip(tau/(N*eta*Kt),-I_max,I_max)
-        saturated = abs(tau/(N*eta*Kt))>=I_max and ((e>0 and tau>0) or (e<0 and tau<0))
-        if not saturated: eint += e*dt
         Vc=np.clip(ic*R+Ke*N*wk,-V,V)
         didt=(Vc-R*curc[k]-Ke*N*wk)/Lmot; curc[k+1]=curc[k]+didt*dt
         to=N*eta*Kt*curc[k+1]
         def f(x):
             th,ww=x
-            return np.array([ww,(to-b*ww-m*g*Lc*math.cos(th))/J])
+            return np.array([ww,(to-b*ww)/J])
         x=X[k]; k1=f(x); k2=f(x+0.5*dt*k1); k3=f(x+0.5*dt*k2); k4=f(x+dt*k3)
         X[k+1]=x+dt*(k1+2*k2+2*k3+k4)/6
     RE[-1]=0
@@ -234,6 +236,13 @@ def run_cycle(m=m_arm, J=J_eff, b=b_fric, tc=0.0):
     return T,X,RE,curc,volt,tau_m
 
 Tc,Xc,REc,curc,volt,tau_m = run_cycle()
+errc = np.degrees(REc[:,0]-Xc[:,0])
+mo = (Tc>=2.0)&(Tc<=4.5); mc = (Tc>=10.0)&(Tc<=12.5)
+metrics["cycle"] = dict(peak_err_deg=float(np.max(np.abs(errc))),
+    rms_open_deg=float(np.sqrt(np.mean(errc[mo]**2))), rms_close_deg=float(np.sqrt(np.mean(errc[mc]**2))),
+    peak_torque_Nm=float(np.max(np.abs(tau_m))), peak_I=float(np.max(np.abs(curc))), peak_V=float(np.max(np.abs(volt))),
+    final_deg=float(np.degrees(Xc[-1,0])))
+print("CYCLE:", metrics["cycle"])
 
 # ----------------------------------------------------------------------
 # Linearised open-loop plant (output shaft), for controller design section
@@ -245,8 +254,9 @@ A = np.array([[0,1],[0,-b_fric/J_eff]]); B=np.array([[0],[1/J_eff]])
 C=np.array([[1,0]]); Dm=np.array([[0]])
 sys_tau = signal.StateSpace(A,B,C,Dm)
 # closed loop with PD on position: characteristic s^2 + (b+Kd)/J s + Kp/J
-cl_poles = np.roots([1, (b_fric+Kd)/J_eff, Kp/J_eff])
-metrics["closed_loop_poles"] = [float(p) for p in cl_poles]
+cl_poles = np.roots([J_eff, b_fric+Kd, Kp, Ki])
+metrics["closed_loop_poles"] = [complex(p).__repr__() for p in cl_poles]
+metrics["open_loop_poles"] = [0.0, -b_fric/J_eff]
 print("Closed-loop poles:", cl_poles, " wn=",wn," zeta=",zeta)
 
 # ======================================================================
@@ -263,8 +273,23 @@ ax[0].set_ylabel(r'$\theta$ [deg]'); ax[0].legend(loc='lower right'); ax[0].set_
 ax[0].set_title('Gate arm angle: 0 (closed) $\\rightarrow$ 90 deg (open)')
 ax[1].plot(t,np.degrees(err),'k'); ax[1].set_ylabel('Error [deg]')
 ax[2].plot(t,cur,'m'); ax[2].set_ylabel('Motor current [A]'); ax[2].set_xlabel('Time [s]')
-ax[2].set_xlim(0,8)
+ax[2].set_xlim(0,6)
 fig.tight_layout(); fig.savefig(FIG+"/fig_open_response.png"); plt.close(fig)
+
+# --- Fig: speed + voltage (opening move) ---
+fig,ax=plt.subplots(2,1,figsize=(7.2,5.0),sharex=True)
+ax[0].plot(t,np.degrees(omr),'r--',lw=1.3,label='reference'); ax[0].plot(t,np.degrees(om),'b-',lw=1.2,label='actual')
+ax[0].set_ylabel('speed (deg/s)'); ax[0].legend(fontsize=8); ax[0].set_title('Arm speed (top) and motor terminal voltage (bottom)')
+ax[1].plot(t,volt_open,'g-'); ax[1].axhline(V,color='r',ls='--',lw=1); ax[1].set_ylabel('voltage (V)'); ax[1].set_xlabel('time (s)'); ax[1].set_xlim(0,6)
+fig.tight_layout(); fig.savefig(FIG+"/fig_speed_voltage.png"); plt.close(fig)
+
+# --- Fig: pole map ---
+fig,ax=plt.subplots(figsize=(5.2,4.0))
+ax.plot(cl_poles.real,cl_poles.imag,'bx',ms=10,mew=2,label='closed loop (PID)')
+ax.plot([0,-b_fric/J_eff],[0,0],'ro',label='open loop')
+ax.axhline(0,color='k',lw=.6); ax.axvline(0,color='k',lw=.6); ax.set_xlabel('Re (rad/s)'); ax.set_ylabel('Im (rad/s)')
+ax.set_title('Pole map'); ax.legend(fontsize=8)
+fig.tight_layout(); fig.savefig(FIG+"/fig_poles.png"); plt.close(fig)
 
 # --- Fig: full cycle (6 panels) ---
 fig,axs=plt.subplots(3,2,figsize=(9.5,9.0))
@@ -290,7 +315,7 @@ ax[0].plot(tR,np.degrees(errR),'r-',label='worst case (+15% m, +20% J, 2$\\times
 ax[0].set_ylabel('tracking error (deg)'); ax[0].legend(fontsize=8); ax[0].set_title('Robustness: tracking error')
 ax[1].plot(t,cur,'b-',label='nominal'); ax[1].plot(tR,curR,'r-',label='worst case')
 ax[1].axhline(I_max,color='k',ls='--',lw=1); ax[1].axhline(-I_max,color='k',ls='--',lw=1)
-ax[1].set_ylabel('motor current (A)'); ax[1].set_xlabel('time (s)'); ax[1].set_xlim(0,8)
+ax[1].set_ylabel('motor current (A)'); ax[1].set_xlabel('time (s)'); ax[1].set_xlim(0,6)
 ax[1].legend(fontsize=8); ax[1].set_title('Motor current vs 30 A driver limit')
 fig.tight_layout(); fig.savefig(FIG+"/fig_robustness.png"); plt.close(fig)
 
@@ -306,16 +331,17 @@ fig.tight_layout(); fig.savefig(FIG+"/fig_profile.png"); plt.close(fig)
 w0,T0=signal.step(sys_tau); w0=T0*0
 # simulate open loop (no control): apply constant torque equal to gravity holding?
 # Show unstable open-loop under small disturbance: start at 5 deg offset, no control
-dt=1e-3; tt=np.arange(0,8,dt); th_o=np.zeros_like(tt); w_o=np.zeros_like(tt); th_o[0]=math.radians(5)
+dt=1e-3; tt=np.arange(0,6,dt); th_o=np.zeros_like(tt); w_o=np.zeros_like(tt)
+tau_step = 5.0   # N m constant torque at the arm shaft, no feedback
 for k in range(len(tt)-1):
-    wd=(-b_fric*w_o[k]-m_arm*g*Lc*math.cos(th_o[k]))/J_eff
+    wd=(tau_step-b_fric*w_o[k])/J_eff
     w_o[k+1]=w_o[k]+wd*dt; th_o[k+1]=th_o[k]+w_o[k+1]*dt
 th_cl=th
 fig,ax=plt.subplots(1,2,figsize=(9.5,3.6))
-ax[0].plot(tt,np.degrees(th_o),'r-'); ax[0].set_title('Open-loop: 5 deg disturbance, arm falls (gravity unstable)')
-ax[0].set_xlabel('time (s)'); ax[0].set_ylabel('angle (deg)'); ax[0].set_ylim(-120,20)
+ax[0].plot(tt,np.degrees(th_o),'r-'); ax[0].set_title('Open loop: 5 N m torque step, arm never settles\n(pole at s = 0: marginally stable)')
+ax[0].set_xlabel('time (s)'); ax[0].set_ylabel('angle (deg)')
 ax[1].plot(t,np.degrees(thr),'k--',label='reference'); ax[1].plot(t,np.degrees(th_cl),'b-',label='PID closed loop')
-ax[1].set_title('Closed-loop PID + gravity feed-forward'); ax[1].set_xlabel('time (s)'); ax[1].set_ylabel('angle (deg)')
+ax[1].set_title('Closed loop: PID position control'); ax[1].set_xlabel('time (s)'); ax[1].set_ylabel('angle (deg)')
 ax[1].legend(fontsize=8); ax[1].set_ylim(-5,100)
 fig.tight_layout(); fig.savefig(FIG+"/fig_openloop.png"); plt.close(fig)
 

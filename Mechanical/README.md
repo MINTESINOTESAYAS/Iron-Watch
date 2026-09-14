@@ -14,4 +14,4 @@ Boom-gate drive: 24 V DC motor → 3-stage spur gearbox (70 : 1) → 90 mm outpu
 | `assembly/Gearbox_Design.SLDASM` | Gearbox assembly (exported to `../Gearbox_Design.xml` for Simscape Multibody) |
 | `assembly/Overall_metal_detecting_gate_design.SLDASM` | Full gate assembly |
 
-Ratios: 4.000 × 4.375 × 4.000 = 70.0. Inertia and motor sizing derived from these parts are in `../matlab/gate_params.m`; see report §3.2.
+Ratios: 4.000 × 4.375 × 4.000 = 70.0. Inertia and motor sizing derived from these parts are in `../matlab/gate_params.m`; see report Section 3.1.

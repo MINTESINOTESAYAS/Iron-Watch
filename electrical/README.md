@@ -9,4 +9,4 @@
 - Buzzer GPIO 25, alert LED GPIO 26, OK LED GPIO 27
 - Serial (USB) link to the PC running `software/attendance/`
 
-The same circuit is reproduced for browser simulation in `software/esp32_gate/diagram.json` (Wokwi). Pin map and rationale: report §3.5.
+The same circuit is reproduced for browser simulation in `software/esp32_gate/diagram.json` (Wokwi). Pin map and rationale: report Sections 3.3.5 and 3.4.

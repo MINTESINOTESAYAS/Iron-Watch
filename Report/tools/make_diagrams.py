@@ -42,7 +42,7 @@ def section(x,w,label,color):
     ax.add_patch(Rectangle((x,0.95),w,5.35,fill=False,ec=color,lw=1.4,ls="--",alpha=.7))
     ax.text(x+0.1,6.12,label,color=color,fontsize=9.5,weight="bold")
 section(0.2,1.75,"1 REFERENCE",GREY)
-section(2.15,3.35,"2 CONTROLLER (PID + feed-forward)",BLUE)
+section(2.15,3.35,"2 CONTROLLER (PID)",BLUE)
 section(5.7,2.15,"3 MOTOR (electrical)",ORANGE)
 section(8.05,4.15,"4 MECHANICAL PLANT",GREEN)
 
@@ -55,9 +55,7 @@ box(ax,3.0,5.15,1.85,0.62,"$K_p$ = 528.3 N m/rad",LBLUE,BLUE,8.2)
 box(ax,3.0,4.27,1.85,0.62,"$K_i$ = 264.1 + integrator\n(clamped $\\pm$300 N m)",LBLUE,BLUE,7.8)
 box(ax,3.0,3.40,1.85,0.62,"$K_d$ = 190.2\n(speed error)",LBLUE,BLUE,8)
 SPID=(5.15,4.05); sumcirc(ax,SPID,0.14)
-# feed forward
-box(ax,2.55,2.35,2.55,0.78,"Gravity feed-forward\n$\\tau_{ff}=m g L_c \\cos\\theta$ = 66.22$\\cos\\theta$ N m",LOR,ORANGE,8)
-SFF=(5.55,3.0); sumcirc(ax,SFF,0.13)
+box(ax,2.55,2.35,2.55,0.78,"Integral clamp $\\pm$300 N m\n= anti-windup (no extra logic)",LGREY,GREY,8,False)
 # motor section
 box(ax,5.82,3.55,1.9,0.95,"$i_{cmd}=\\tau_{cmd}/(N\\eta K_t)$\nDriver current limit\n$\\pm$30 A",LOR,ORANGE,8)
 box(ax,5.82,2.25,1.9,0.95,"Voltage $V=iR+K_e N\\omega$\nSupply limit $\\pm$24 V",LOR,ORANGE,8.2)
@@ -79,11 +77,8 @@ line(ax,[2.70,2.85,2.85],[4.05,4.05,3.71]); arrow(ax,(2.85,3.71),(3.0,3.71))
 arrow(ax,(4.85,5.46),(5.05,4.20))
 arrow(ax,(4.85,4.58),(5.03,4.12))
 arrow(ax,(4.85,3.71),(5.05,3.90))
-# SPID -> SFF ; FF -> SFF
-arrow(ax,(5.29,4.05),(5.42,3.15))
-line(ax,[3.83,3.83,5.55],[2.74,2.74,2.74]); arrow(ax,(5.55,2.74),(5.55,2.86))
-# SFF -> icmd -> voltage -> electrical
-arrow(ax,(5.68,3.05),(5.82,3.95))
+# SPID -> icmd -> voltage -> electrical
+arrow(ax,(5.29,4.05),(5.82,4.05))
 arrow(ax,(6.77,3.55),(6.77,3.20))
 arrow(ax,(6.77,2.25),(6.77,2.00))
 # electrical -> gearbox (current output routed out of the block's right edge)
@@ -94,13 +89,13 @@ arrow(ax,(7.55,2.45),(7.55,2.62),color=ORANGE)
 ax.text(9.7,0.58,"back-EMF $K_e N\\omega$ feedback into voltage command",fontsize=7.6,color=ORANGE,ha="center")
 # gearbox -> S4 -> inertia -> theta
 arrow(ax,(10.00,3.95),(10.40,3.05))
-ax.text(10.05,3.40,"gravity $mgL_c\\cos\\theta$, friction $b\\omega$",fontsize=7.4,color=GREEN,ha="center")
+ax.text(10.05,3.40,"viscous friction $b\\omega$",fontsize=7.4,color=GREEN,ha="center")
 arrow(ax,(10.70,2.9),(10.85,2.55))
 line(ax,[11.48,11.48],[3.00,4.65]); arrow(ax,(11.48,4.60),(11.48,4.66))
 # outer feedback theta -> S1 (bottom route, tapped at the arm-angle line)
 line(ax,[11.48,12.05,12.05,2.55,2.55],[3.85,3.85,0.32,0.32,3.85],color=BLUE,lw=1.2,ls="-.")
 arrow(ax,(2.55,3.85),(2.55,3.92),color=BLUE)
-ax.text(7.1,0.10,"Position feedback $\\theta$ (and speed $\\omega$) to PID  - - -  integrator frozen while the driver is saturated (anti-windup)",
+ax.text(7.1,0.10,"Position feedback $\\theta$ (and speed $\\omega$) to PID  - - -  plant = inertia + viscous friction (arm counter-balanced, no gravity term)",
         ha="center",fontsize=8,color=BLUE)
 fig.tight_layout(); fig.savefig(FIG+"/fig_control_architecture.png",bbox_inches="tight"); plt.close(fig)
 
@@ -233,6 +228,6 @@ ax.annotate("66.22 N m at 0° (arm horizontal)",xy=(8,66.22),xytext=(26,60),font
             arrowprops=dict(arrowstyle="->",color=GREY))
 ax.set_xlabel("arm angle $\\theta$  [0° = closed/horizontal, 90° = open/vertical]",fontsize=9.5)
 ax.set_ylabel("gravity torque $m g L_c \\cos\\theta$ (N m)",fontsize=9.5)
-ax.set_title("Gravity torque vs arm angle",fontsize=10); ax.grid(alpha=.35); ax.set_xlim(0,90); ax.set_ylim(0,72)
+ax.set_title("Static gravity load (unbalanced arm) - removed by counterbalance",fontsize=9.5); ax.grid(alpha=.35); ax.set_xlim(0,90); ax.set_ylim(0,72)
 fig.tight_layout(); fig.savefig(FIG+"/fig_gate_concept.png",bbox_inches="tight"); plt.close(fig)
 print("Diagrams regenerated.")

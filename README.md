@@ -5,7 +5,7 @@ metal factory. AASTU Electromechanical Engineering internship project.
 
 | Folder | Contents |
 |---|---|
-| `docs/` | Final report: `Project_Report.pdf`, `Project_Report.docx`, `Project_Report.md` (source), `figures/`, `build_report.py` |
+| `Report/` | Final report: `Iron-Watch_Project_Report.pdf` / `.docx` / `.md` (source), `figures/`, `data/`, `tools/` (regeneration scripts) |
 | `matlab/` | Gate drive model: `gate_params.m`, `gate_sim.m`, `gate_analysis.m`, `build_gate_simulink.m` |
 | `software/attendance/` | OpenCV face-recognition attendance system (Python) - see its README |
 | `software/esp32_gate/` | ESP32 gate-controller firmware + Wokwi diagram |
@@ -33,6 +33,10 @@ python dashboard.py            # http://localhost:5000
 ## Rebuild the report
 
 ```bash
-pip install python-docx reportlab
-python docs/build_report.py     # regenerates Project_Report.pdf and .docx from the .md
+pip install numpy scipy matplotlib markdown xhtml2pdf python-docx pypandoc-binary
+cd Report/tools
+python run_sim.py        # re-runs the drive simulation, writes figures + data
+python make_diagrams.py  # architecture / gearbox / electrical / control diagrams
+python build_pdf.py      # Iron-Watch_Project_Report.pdf
+python build_docx.py     # Iron-Watch_Project_Report.docx
 ```
